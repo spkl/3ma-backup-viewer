@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3maBackupReader", "3maBacku
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3maBackupReaderTest", "3maBackupReaderTest\3maBackupReaderTest.csproj", "{BDD273E3-1EF2-4140-B3BD-E29483EF112A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3maBackupViewer", "3maBackupViewer\3maBackupViewer.csproj", "{624FAA09-4362-4AD1-BAD5-08D758390395}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{BDD273E3-1EF2-4140-B3BD-E29483EF112A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BDD273E3-1EF2-4140-B3BD-E29483EF112A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BDD273E3-1EF2-4140-B3BD-E29483EF112A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{624FAA09-4362-4AD1-BAD5-08D758390395}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{624FAA09-4362-4AD1-BAD5-08D758390395}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{624FAA09-4362-4AD1-BAD5-08D758390395}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{624FAA09-4362-4AD1-BAD5-08D758390395}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
