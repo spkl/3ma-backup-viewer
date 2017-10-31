@@ -8,6 +8,11 @@ namespace LateNightStupidities.IIImaBackupReader.Messages
     public abstract class Message
     {
         /// <summary>
+        /// Gets the conversation this message belongs to.
+        /// </summary>
+        public Conversation Conversation { get; internal set; }
+
+        /// <summary>
         /// Gets the API ID.
         /// </summary>
         public string ApiId { get; private set; }

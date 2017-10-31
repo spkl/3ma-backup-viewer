@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using CsvHelper;
 using LateNightStupidities.IIImaBackupReader.Messages;
 
@@ -16,6 +17,11 @@ namespace LateNightStupidities.IIImaBackupReader
         /// The conversation partner.
         /// </summary>
         public Identity ConversationPartner { get; }
+
+        /// <summary>
+        /// Gets the file path of the conversation file.
+        /// </summary>
+        public string FilePath { get; private set; }
 
         protected Conversation(IEnumerable<Message> messages, Identity conversationPartner) : base(messages)
         {
@@ -35,7 +41,9 @@ namespace LateNightStupidities.IIImaBackupReader
             FileInfo file = new FileInfo(path);
             using (TextReader reader = file.OpenText())
             {
-                return FromTextReader(reader, backup.Me, new Identity(conversationPartner, backup));
+                Conversation conversation = FromTextReader(reader, backup.Me, new Identity(conversationPartner, backup));
+                conversation.FilePath = path;
+                return conversation;
             }
         }
 
@@ -49,14 +57,17 @@ namespace LateNightStupidities.IIImaBackupReader
         {
             List<Message> messages = new List<Message>();
             CsvReader csv = new CsvReader(reader);
+            Conversation conversation = new Conversation(Enumerable.Empty<Message>(), conversationPartner);
             while (csv.Read())
             {
                 Message message = Message.FromFields(csv.CurrentRecord);
                 message.Creator = message.Outgoing ? me : conversationPartner;
+                message.Conversation = conversation;
                 messages.Add(message);
             }
 
-            return new Conversation(messages, conversationPartner);
+            conversation.AddRange(messages);
+            return conversation;
         }
     }
 }

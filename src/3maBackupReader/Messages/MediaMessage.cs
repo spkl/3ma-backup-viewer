@@ -1,4 +1,6 @@
-﻿namespace LateNightStupidities.IIImaBackupReader.Messages
+﻿using System.IO;
+
+namespace LateNightStupidities.IIImaBackupReader.Messages
 {
     /// <summary>
     /// A message with attached media.
@@ -7,8 +9,13 @@
     public abstract class MediaMessage : Message
     {
         /// <summary>
-        /// The file name of the attached media in the backup folder.
+        /// Gets the file name of the attached media in the backup folder.
         /// </summary>
         public string FileName => $"message_media_{this.Uid}";
+
+        /// <summary>
+        /// Gets the file path of the attached media.
+        /// </summary>
+        public string FilePath => Path.Combine(Path.GetDirectoryName(this.Conversation.FilePath), this.FileName);
     }
 }
