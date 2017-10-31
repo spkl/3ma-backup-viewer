@@ -8,7 +8,7 @@
         /// <summary>
         /// Gets the ID of the contact.
         /// </summary>
-        public Identity Identity { get; private set; }
+        public Identity Identity { get; internal set; }
 
         /// <summary>
         /// Gets the verification status.

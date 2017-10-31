@@ -189,6 +189,7 @@ namespace LateNightStupidities.IIImaBackupReader
             }
 
             this.Contacts = contacts.ToDictionary(c => c.Identity);
+            this.Contacts.Add(this.Me, new Contact() {CustomDisplayName = "Me", Identity = this.Me});
         }
     }
 }
