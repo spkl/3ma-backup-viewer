@@ -8,6 +8,7 @@
         xmlns:messages="clr-namespace:LateNightStupidities.IIImaBackupViewer.ViewModel.Messages"
         xmlns:converters="clr-namespace:LateNightStupidities.IIImaBackupViewer.ViewModel.Converters"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
+        xmlns:content="clr-namespace:LateNightStupidities.IIImaBackupViewer.ViewModel.Messages.Content"
         mc:Ignorable="d"
         DataContext="{StaticResource MainViewModel}"
         Title="3ma Backup Viewer" 
@@ -146,6 +147,7 @@
                         <converters:BoolToGridLengthConverter x:Key="BoolToGridLengthConverter" />
                         <converters:BoolToGridLengthConverter2 x:Key="BoolToGridLengthConverter2" />
                         <converters:BoolToColumnConverter x:Key="BoolToColumnConverter" />
+                        <converters:EmptyToVisibilityConverter x:Key="EmptyToVisibilityConverter" />
 
                         <system:Boolean x:Key="TrueBool">True</system:Boolean>
                         <system:Boolean x:Key="FalseBool">False</system:Boolean>
@@ -181,7 +183,7 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                             <ListBox.Resources>
-                                <DataTemplate DataType="{x:Type messages:TextMessageViewModel}">
+                                <DataTemplate DataType="{x:Type messages:MessageViewModel}">
                                     <Grid HorizontalAlignment="Stretch">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="{Binding Outgoing, Converter={StaticResource BoolToGridLengthConverter}, ConverterParameter={StaticResource TrueBool}}" />
@@ -200,9 +202,7 @@
                                                     BorderThickness="0"
                                                     Padding="5"
                                                     Margin="5">
-                                                <TextBlock Text="{Binding Text}"
-                                                           TextWrapping="Wrap"
-                                                           HorizontalAlignment="Left" />
+                                                <ContentControl Content="{Binding Content}" />
                                             </Border>
                                             <Border Grid.Column="{Binding Outgoing, Converter={StaticResource BoolToColumnConverter}, ConverterParameter={StaticResource TrueBool}}"
                                                     HorizontalAlignment="{Binding Outgoing, Converter={StaticResource BoolToHorizontalAlignmentConverter}}"
@@ -227,41 +227,123 @@
                                         <TextBlock Text="{Binding Date}" FontSize="7pt" FontWeight="Bold" />
                                     </Border>
                                 </DataTemplate>
-                                <DataTemplate DataType="{x:Type messages:ImageMessageViewModel}">
-                                    <Grid HorizontalAlignment="Stretch">
+                                <DataTemplate DataType="{x:Type content:TextMessageContentViewModel}">
+                                    <TextBlock Text="{Binding Text}"
+                                               TextWrapping="Wrap"
+                                               HorizontalAlignment="Left" />
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type content:ImageMessageContentViewModel}">
+                                    <Image Source="{Binding Path=Source}" 
+                                           MaxWidth="200" 
+                                           RenderOptions.BitmapScalingMode="HighQuality" />
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type content:LocationMessageContentViewModel}">
+                                    <Grid ToolTip="{Binding LatLong}">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="{Binding Outgoing, Converter={StaticResource BoolToGridLengthConverter}, ConverterParameter={StaticResource TrueBool}}" />
-                                            <ColumnDefinition Width="{Binding Outgoing, Converter={StaticResource BoolToGridLengthConverter}, ConverterParameter={StaticResource FalseBool}}" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
-                                        <Grid Grid.Column="{Binding Outgoing, Converter={StaticResource BoolToColumnConverter}, ConverterParameter={StaticResource FalseBool}}"
-                                              HorizontalAlignment="{Binding Outgoing, Converter={StaticResource BoolToHorizontalAlignmentConverter}}">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="{Binding Outgoing, Converter={StaticResource BoolToGridLengthConverter2}, ConverterParameter={StaticResource TrueBool}}" />
-                                                <ColumnDefinition Width="{Binding Outgoing, Converter={StaticResource BoolToGridLengthConverter2}, ConverterParameter={StaticResource FalseBool}}" />
-                                            </Grid.ColumnDefinitions>
-                                            <Border Grid.Column="{Binding Outgoing, Converter={StaticResource BoolToColumnConverter}, ConverterParameter={StaticResource FalseBool}}"
-                                                    HorizontalAlignment="{Binding Outgoing, Converter={StaticResource BoolToHorizontalAlignmentConverter}}"
-                                                    CornerRadius="5" 
-                                                    Background="{Binding Outgoing, Converter={StaticResource BoolToBackgroundConverter}}" 
-                                                    BorderThickness="0"
-                                                    Padding="5"
-                                                    Margin="5">
-                                                <Image Source="{Binding Path=Source}" 
-                                                       MaxWidth="200" 
-                                                       RenderOptions.BitmapScalingMode="HighQuality" />
-                                            </Border>
-                                            <Border Grid.Column="{Binding Outgoing, Converter={StaticResource BoolToColumnConverter}, ConverterParameter={StaticResource TrueBool}}"
-                                                    HorizontalAlignment="{Binding Outgoing, Converter={StaticResource BoolToHorizontalAlignmentConverter}}"
-                                                    VerticalAlignment="Bottom"
-                                                    CornerRadius="5"
-                                                    Background="LightGray"
-                                                    BorderThickness="0"
-                                                    Padding="3"
-                                                    Margin="3 0 0 9">
-                                                <TextBlock Text="{Binding Time}" FontSize="7pt" />
-                                            </Border>
-                                        </Grid>
+                                        <Rectangle Grid.Column="0"
+                                                   VerticalAlignment="Center"
+                                                   Margin="5"
+                                                   Width="8" 
+                                                   Height="12">
+                                            <Rectangle.Fill>
+                                                <DrawingBrush>
+                                                    <DrawingBrush.Drawing>
+                                                        <DrawingGroup>
+                                                            <DrawingGroup.Children>
+                                                                <GeometryDrawing Brush="#FF424242" Geometry="F1M12.0873,7.9841C10.8833,7.9841 9.9043,7.0051 9.9043,5.8011 9.9043,4.5981 10.8833,3.6191 12.0873,3.6191 13.2913,3.6191 14.2703,4.5981 14.2703,5.8011 14.2703,7.0051 13.2913,7.9841 12.0873,7.9841 M12.0873,1.0001C9.4363,1.0001 7.2853,3.1501 7.2853,5.8011 7.2853,7.7861 8.4903,9.4891 10.2073,10.2201L12.0003,16.7141 13.9673,10.2201C15.6843,9.4891 16.8893,7.7861 16.8893,5.8011 16.8893,3.1501 14.7383,1.0001 12.0873,1.0001" />
+                                                            </DrawingGroup.Children>
+                                                        </DrawingGroup>
+                                                    </DrawingBrush.Drawing>
+                                                </DrawingBrush>
+                                            </Rectangle.Fill>
+                                        </Rectangle>
+                                        <StackPanel Grid.Column="1"
+                                                    VerticalAlignment="Center">
+                                            <TextBlock Text="{Binding Name}" Visibility="{Binding Name, Converter={StaticResource EmptyToVisibilityConverter}}" />
+                                            <TextBlock Text="{Binding Address}" Visibility="{Binding Address, Converter={StaticResource EmptyToVisibilityConverter}}" />
+                                        </StackPanel>
                                     </Grid>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type content:AudioMessageContentViewModel}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <StackPanel.Resources>
+                                            <Style TargetType="{x:Type Button}" >
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsEnabled" Value="False">
+                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                    </Trigger>
+                                                    <Trigger Property="IsEnabled" Value="True">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Resources>
+                                        <Button Command="{Binding PlayCommand}"
+                                                Width="20"
+                                                Height="20"
+                                                Margin="0 0 3 0">
+                                            <Rectangle Width="10" Height="11">
+                                                <Rectangle.Fill>
+                                                    <DrawingBrush>
+                                                        <DrawingBrush.Drawing>
+                                                            <DrawingGroup>
+                                                                <DrawingGroup.Children>
+                                                                    <GeometryDrawing Brush="#FF424242" Geometry="F1M4,2L4,14 12,8z" />
+                                                                </DrawingGroup.Children>
+                                                            </DrawingGroup>
+                                                        </DrawingBrush.Drawing>
+                                                    </DrawingBrush>
+                                                </Rectangle.Fill>
+                                            </Rectangle>
+                                        </Button>
+                                        <Button Command="{Binding PauseCommand}"
+                                                Width="20"
+                                                Height="20"
+                                                Margin="0 0 3 0">
+                                            <Rectangle Width="10" Height="10">
+                                                <Rectangle.Fill>
+                                                    <DrawingBrush>
+                                                        <DrawingBrush.Drawing>
+                                                            <DrawingGroup>
+                                                                <DrawingGroup.Children>
+                                                                    <GeometryDrawing Brush="#FF424242" Geometry="F1M12,3L9,3 9,12 12,12z M7,12L4,12 4,3 7,3z" />
+                                                                </DrawingGroup.Children>
+                                                            </DrawingGroup>
+                                                        </DrawingBrush.Drawing>
+                                                    </DrawingBrush>
+                                                </Rectangle.Fill>
+                                            </Rectangle>
+                                        </Button>
+                                        <TextBlock Text="{Binding Position, UpdateSourceTrigger=PropertyChanged}"
+                                                   VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type content:VideoMessageContentViewModel}">
+                                    <Button Command="{Binding OpenVideoCommand}"
+                                            Cursor="{x:Static Cursors.Hand}">
+                                        <Button.Template>
+                                            <ControlTemplate>
+                                                <Viewbox Width="32" Height="32">
+                                                    <Rectangle Width="16" Height="12">
+                                                        <Rectangle.Fill>
+                                                            <DrawingBrush>
+                                                                <DrawingBrush.Drawing>
+                                                                    <DrawingGroup>
+                                                                        <DrawingGroup.Children>
+                                                                            <GeometryDrawing Brush="#FF414141" Geometry="F1M6,11L6,5 10.954,8z M14,3L2,3C1.448,3,1,3.448,1,4L1,12C1,12.552,1.448,13,2,13L14,13C14.552,13,15,12.552,15,12L15,4C15,3.448,14.552,3,14,3" />
+                                                                        </DrawingGroup.Children>
+                                                                    </DrawingGroup>
+                                                                </DrawingBrush.Drawing>
+                                                            </DrawingBrush>
+                                                        </Rectangle.Fill>
+                                                    </Rectangle>
+                                                </Viewbox>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
                                 </DataTemplate>
                             </ListBox.Resources>
                         </ListBox>

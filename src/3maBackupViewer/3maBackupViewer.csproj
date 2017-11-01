@@ -66,13 +66,19 @@
     <Compile Include="ViewModel\Converters\BoolToHorizontalAlignmentConverter.cs" />
     <Compile Include="ViewModel\ContactViewModel.cs" />
     <Compile Include="ViewModel\ConversationViewModel.cs" />
+    <Compile Include="ViewModel\Converters\EmptyToVisibilityConverter.cs" />
+    <Compile Include="ViewModel\DefaultCommand.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\Messages\Content\AudioMessageContentViewModel.cs" />
+    <Compile Include="ViewModel\Messages\Content\LocationMessageContentViewModel.cs" />
+    <Compile Include="ViewModel\Messages\Content\VideoMessageContentViewModel.cs" />
     <Compile Include="ViewModel\Messages\DateMarkerViewModel.cs" />
-    <Compile Include="ViewModel\Messages\ImageMessageViewModel.cs" />
+    <Compile Include="ViewModel\Messages\Content\ImageMessageContentViewModel.cs" />
+    <Compile Include="ViewModel\Messages\Content\MessageContentViewModel.cs" />
+    <Compile Include="ViewModel\Messages\Content\MessageContentViewModel{T}.cs" />
     <Compile Include="ViewModel\Messages\MessageListViewModel.cs" />
     <Compile Include="ViewModel\Messages\MessageViewModel.cs" />
-    <Compile Include="ViewModel\Messages\MessageViewModel{T}.cs" />
-    <Compile Include="ViewModel\Messages\TextMessageViewModel.cs" />
+    <Compile Include="ViewModel\Messages\Content\TextMessageContentViewModel.cs" />
     <Compile Include="ViewModel\RelayCommand.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

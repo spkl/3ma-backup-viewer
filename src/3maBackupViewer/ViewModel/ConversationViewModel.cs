@@ -33,15 +33,7 @@ namespace LateNightStupidities.IIImaBackupViewer.ViewModel
                     lastDate = messageDate;
                 }
 
-                if (message is TextMessage textMessage)
-                {
-                    this.Messages.Add(new TextMessageViewModel(textMessage));
-                }
-
-                if (message is ImageMessage imageMessage)
-                {
-                    this.Messages.Add(new ImageMessageViewModel(imageMessage));
-                }
+                this.Messages.Add(new MessageViewModel(message));
             }
         }
     }
