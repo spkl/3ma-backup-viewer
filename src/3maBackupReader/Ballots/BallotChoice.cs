@@ -56,7 +56,7 @@ namespace LateNightStupidities.IIImaBackupReader.Ballots
         /// <summary>
         /// Gets all the votes cast for this choice.
         /// </summary>
-        public List<BallotVote> Votes => new List<BallotVote>();
+        public List<BallotVote> Votes { get; } = new List<BallotVote>();
 
         /// <summary>
         /// Creates a choice from a CSV row.
