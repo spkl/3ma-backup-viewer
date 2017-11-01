@@ -43,6 +43,22 @@ namespace LateNightStupidities.IIImaBackupViewer.ViewModel.Messages
                 case VideoMessage videoMessage:
                     this.Content = new VideoMessageContentViewModel(videoMessage, this);
                     break;
+                case BallotMessage ballotMessage:
+                    switch (ballotMessage.Action)
+                    {
+                        case BallotAction.Create:
+                            this.Content = new CreateBallotMessageContentViewModel(ballotMessage, this);
+                            break;
+                        case BallotAction.Close:
+                            this.Content = new CloseBallotMessageContentViewModel(ballotMessage, this);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+                    break;
+                case FileMessage fileMessage:
+                    this.Content = new FileMessageContentViewModel(fileMessage, this);
+                    break;
             }
         }
     }

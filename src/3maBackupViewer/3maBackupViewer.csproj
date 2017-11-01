@@ -70,6 +70,9 @@
     <Compile Include="ViewModel\DefaultCommand.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\Messages\Content\AudioMessageContentViewModel.cs" />
+    <Compile Include="ViewModel\Messages\Content\CloseBallotMessageContentViewModel.cs" />
+    <Compile Include="ViewModel\Messages\Content\CreateBallotMessageContentViewModel.cs" />
+    <Compile Include="ViewModel\Messages\Content\FileMessageContentViewModel.cs" />
     <Compile Include="ViewModel\Messages\Content\LocationMessageContentViewModel.cs" />
     <Compile Include="ViewModel\Messages\Content\VideoMessageContentViewModel.cs" />
     <Compile Include="ViewModel\Messages\DateMarkerViewModel.cs" />
