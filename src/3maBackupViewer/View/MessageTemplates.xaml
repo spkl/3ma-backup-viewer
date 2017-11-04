@@ -44,7 +44,8 @@
                         Padding="3"
                         Margin="3 0 0 9">
                     <TextBlock Text="{Binding Time}" 
-                               FontSize="7pt" />
+                               FontSize="7pt"
+                               ToolTip="{Binding LongTime}" />
                 </Border>
             </Grid>
         </Grid>

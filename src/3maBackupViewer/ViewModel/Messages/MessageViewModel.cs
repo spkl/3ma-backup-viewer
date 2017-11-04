@@ -16,7 +16,9 @@ namespace LateNightStupidities.IIImaBackupViewer.ViewModel.Messages
 
         public DateTime Timestamp => this.Message.CreatedAt.ToLocalTime();
 
-        public string Time => this.Message.CreatedAt.ToLocalTime().ToShortTimeString();
+        public string Time => this.Timestamp.ToShortTimeString();
+
+        public string LongTime => $"{this.Timestamp.ToLongDateString()}, {this.Timestamp.ToLongTimeString()}";
 
         public MessageViewModel(Message message)
         {
