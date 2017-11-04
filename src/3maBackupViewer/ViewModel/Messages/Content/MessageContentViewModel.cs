@@ -7,7 +7,7 @@ namespace LateNightStupidities.IIImaBackupViewer.ViewModel.Messages.Content
 {
     public abstract class MessageContentViewModel : INotifyPropertyChanged, IDisposable
     {
-        private Message Message { get; }
+        public Message Message { get; }
 
         public MessageViewModel Parent { get; }
 

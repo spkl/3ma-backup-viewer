@@ -59,6 +59,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModel\TypeFilter.cs" />
     <Compile Include="View\Converters\BoolToBackgroundConverter.cs" />
     <Compile Include="View\Converters\BoolToColumnConverter.cs" />
     <Compile Include="View\Converters\BoolToGridLengthConverter2.cs" />

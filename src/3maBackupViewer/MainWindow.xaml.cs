@@ -24,5 +24,13 @@ namespace LateNightStupidities.IIImaBackupViewer
         {
             InitializeComponent();
         }
+
+        private void MessagesListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count == 1)
+            {
+                this.MessagesListBox.ScrollIntoView(e.AddedItems[0]);
+            }
+        }
     }
 }
