@@ -54,7 +54,7 @@ namespace LateNightStupidities.IIImaBackupReader.Messages
         /// Gets the body of the message.
         /// This contains the text or more meta data.
         /// </summary>
-        protected string Body
+        public string Body
         {
             get => this.body;
             set
