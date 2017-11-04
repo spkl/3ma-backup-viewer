@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 
-namespace LateNightStupidities.IIImaBackupViewer.ViewModel.Converters
+namespace LateNightStupidities.IIImaBackupViewer.View.Converters
 {
-    public class BoolToColumnConverter : IValueConverter
+    public class BoolToGridLengthConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool outgoing = (bool) value;
+            bool outgoing = (bool)value;
             bool invert = (bool) (parameter ?? false);
 
             if (invert)
             {
-                return outgoing ? 0 : 1;
+                return new GridLength(outgoing ? 2 : 8, GridUnitType.Star);
             }
 
-            return outgoing ? 1 : 0;
+            return new GridLength(outgoing ? 8 : 2, GridUnitType.Star);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

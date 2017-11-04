@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace LateNightStupidities.IIImaBackupViewer.ViewModel.Converters
+namespace LateNightStupidities.IIImaBackupViewer.View.Converters
 {
     public class BoolToBackgroundConverter : IValueConverter
     {

@@ -3,9 +3,9 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace LateNightStupidities.IIImaBackupViewer.ViewModel.Converters
+namespace LateNightStupidities.IIImaBackupViewer.View.Converters
 {
-    public class BoolToGridLengthConverter : IValueConverter
+    public class BoolToGridLengthConverter2 : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -14,10 +14,10 @@ namespace LateNightStupidities.IIImaBackupViewer.ViewModel.Converters
 
             if (invert)
             {
-                return new GridLength(outgoing ? 2 : 8, GridUnitType.Star);
+                return new GridLength(1, outgoing ? GridUnitType.Auto : GridUnitType.Star);
             }
 
-            return new GridLength(outgoing ? 8 : 2, GridUnitType.Star);
+            return new GridLength(1, outgoing ? GridUnitType.Star : GridUnitType.Auto);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

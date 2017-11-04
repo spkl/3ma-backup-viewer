@@ -59,14 +59,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ViewModel\Converters\BoolToBackgroundConverter.cs" />
-    <Compile Include="ViewModel\Converters\BoolToColumnConverter.cs" />
-    <Compile Include="ViewModel\Converters\BoolToGridLengthConverter2.cs" />
-    <Compile Include="ViewModel\Converters\BoolToGridLengthConverter.cs" />
-    <Compile Include="ViewModel\Converters\BoolToHorizontalAlignmentConverter.cs" />
+    <Compile Include="View\Converters\BoolToBackgroundConverter.cs" />
+    <Compile Include="View\Converters\BoolToColumnConverter.cs" />
+    <Compile Include="View\Converters\BoolToGridLengthConverter2.cs" />
+    <Compile Include="View\Converters\BoolToGridLengthConverter.cs" />
+    <Compile Include="View\Converters\BoolToHorizontalAlignmentConverter.cs" />
     <Compile Include="ViewModel\ContactViewModel.cs" />
     <Compile Include="ViewModel\ConversationViewModel.cs" />
-    <Compile Include="ViewModel\Converters\EmptyToVisibilityConverter.cs" />
+    <Compile Include="View\Converters\EmptyToVisibilityConverter.cs" />
     <Compile Include="ViewModel\DefaultCommand.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\Messages\Content\AudioMessageContentViewModel.cs" />
@@ -95,6 +95,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\MessageTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

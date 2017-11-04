@@ -3,18 +3,23 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace LateNightStupidities.IIImaBackupViewer.ViewModel.Converters
+namespace LateNightStupidities.IIImaBackupViewer.View.Converters
 {
-    public class BoolToHorizontalAlignmentConverter : IValueConverter
+    public class EmptyToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if ((bool) value)
+            bool empty;
+            if (value is string str)
             {
-                return HorizontalAlignment.Right;
+                empty = string.IsNullOrEmpty(str);
+            }
+            else
+            {
+                empty = value == null;
             }
 
-            return HorizontalAlignment.Left;
+            return empty ? Visibility.Collapsed : Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
