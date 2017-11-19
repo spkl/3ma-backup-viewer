@@ -27,9 +27,12 @@ namespace LateNightStupidities.IIImaBackupViewer.ViewModel
         public string MessageCount => this.Conversation.Count.ToString();
 
         public string ToolTip =>
-            $"ID: {this.Conversation.ConversationPartner}\r\nConversation started: {this.Conversation.FirstOrDefault()?.CreatedAt.ToLocalTime().ToString() ?? "unknown"}";
+            $"ID: {this.Conversation.ConversationPartner}\r\n" +
+            $"Conversation started: {this.Conversation.FirstOrDefault()?.CreatedAt.ToLocalTime().ToString() ?? "unknown"}";
 
         private List<MessageListViewModel> MessageViewModels { get; }
+
+        private Dictionary<DateTime, List<MessageViewModel>> MessageViewModelsByDate { get; }
 
         public ICollectionView Messages { get; }
 
@@ -121,6 +124,7 @@ namespace LateNightStupidities.IIImaBackupViewer.ViewModel
             this.Conversation = conversation;
 
             this.MessageViewModels = new List<MessageListViewModel>();
+            this.MessageViewModelsByDate = new Dictionary<DateTime, List<MessageViewModel>>();
             foreach (Message message in conversation)
             {
                 DateTime messageDate = message.CreatedAt.ToLocalTime().Date;
@@ -130,7 +134,15 @@ namespace LateNightStupidities.IIImaBackupViewer.ViewModel
                     lastDate = messageDate;
                 }
 
-                this.MessageViewModels.Add(new MessageViewModel(message));
+                MessageViewModel mvm = new MessageViewModel(message);
+                this.MessageViewModels.Add(mvm);
+
+                if (!this.MessageViewModelsByDate.TryGetValue(messageDate, out List<MessageViewModel> messagesOfThisDate))
+                {
+                    messagesOfThisDate = new List<MessageViewModel>();
+                    this.MessageViewModelsByDate.Add(messageDate, messagesOfThisDate);
+                }
+                messagesOfThisDate.Add(mvm);
             }
 
             this.Messages = CollectionViewSource.GetDefaultView(this.MessageViewModels);
@@ -194,13 +206,22 @@ namespace LateNightStupidities.IIImaBackupViewer.ViewModel
                 return true;
             }
 
-            MessageViewModel mvm = o as MessageViewModel;
-            if (mvm == null)
+            if (o is DateMarkerViewModel dmvm)
             {
-                return false;
+                return this.DateMarkerMatchesFilter(dmvm);
             }
 
-            return this.MatchesFilterTyped(mvm);
+            if (o is MessageViewModel mvm)
+            {
+                return this.MatchesFilterTyped(mvm);
+            }
+
+            return false;
+        }
+
+        private bool DateMarkerMatchesFilter(DateMarkerViewModel dmvm)
+        {
+            return this.MessageViewModelsByDate[dmvm.Timestamp].Any(this.MatchesFilterTyped);
         }
 
         private bool MatchesFilterTyped(MessageViewModel mvm)
