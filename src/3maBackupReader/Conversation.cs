@@ -61,6 +61,11 @@ namespace LateNightStupidities.IIImaBackupReader
             while (csv.Read())
             {
                 Message message = Message.FromFields(csv.CurrentRecord);
+                if (message == null)
+                {
+                    continue;
+                }
+
                 message.Creator = message.Outgoing ? me : conversationPartner;
                 message.Conversation = conversation;
                 messages.Add(message);

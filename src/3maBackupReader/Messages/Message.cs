@@ -122,7 +122,7 @@ namespace LateNightStupidities.IIImaBackupReader.Messages
                     msg = new FileMessage();
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    return null;
             }
 
             msg.ApiId = apiId;
