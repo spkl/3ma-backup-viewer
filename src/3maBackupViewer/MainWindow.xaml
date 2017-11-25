@@ -15,6 +15,8 @@
                     Gesture="CTRL+SHIFT+O" />
         <KeyBinding Command="{Binding OpenFolderCommand}"
                     Gesture="CTRL+SHIFT+ALT+O" />
+        <KeyBinding Command="{Binding PrintCommand}"
+                    Gesture="CTRL+P" />
     </Window.InputBindings>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
@@ -43,6 +45,14 @@
                     <!--<MenuItem.Icon>
                         <Image Source="Icons/" Height="16" Width="16" />
                     </MenuItem.Icon>-->
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="_Print"
+                          InputGestureText="Ctrl+P"
+                          Command="{Binding PrintCommand}">
+                    <MenuItem.Icon>
+                        <Image Source="Icons/document-print.png" Height="16" Width="16" />
+                    </MenuItem.Icon>
                 </MenuItem>
                 <Separator />
                 <MenuItem Header="_Exit" 

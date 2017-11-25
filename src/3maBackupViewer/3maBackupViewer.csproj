@@ -159,5 +159,8 @@
   <ItemGroup>
     <Resource Include="3BV.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\document-print.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

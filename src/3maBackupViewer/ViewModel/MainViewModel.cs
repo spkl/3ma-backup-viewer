@@ -4,10 +4,13 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Threading;
+using System.Windows.Media;
 using Ionic.Zip;
 using LateNightStupidities.IIImaBackupReader;
 using LateNightStupidities.IIImaBackupViewer.Properties;
@@ -228,6 +231,100 @@ namespace LateNightStupidities.IIImaBackupViewer.ViewModel
             this.Contacts.Clear();
             this.Conversations.Clear();
             this.StatusText = "Closed backup.";
+        }
+
+        public ICommand PrintCommand => new RelayCommand(o => this.Print(), o => this.CanPrint());
+
+        private void Print()
+        {
+            Task.Run(() => this.ShowDialogAndSendToPrinter());
+        }
+
+        private void ShowDialogAndSendToPrinter()
+        {
+            bool ok = false;
+            try
+            {
+                this.StatusText = "Preparing to print...";
+                this.IsProgressIndeterminate = true;
+
+                PrintDialog printDialog = null;
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    printDialog = new PrintDialog
+                    {
+                        CurrentPageEnabled = false,
+                        SelectedPagesEnabled = false,
+                        UserPageRangeEnabled = false
+                    };
+
+                    ok = printDialog.ShowDialog().GetValueOrDefault();
+                });
+
+                if (!ok)
+                {
+                    return;
+                }
+
+                ConversationViewModel conversationVm = this.SelectedConversation;
+
+                ResourceDictionary messageTemplates =
+                    new ResourceDictionary
+                    {
+                        Source = new Uri("View/MessageTemplates.xaml", UriKind.Relative)
+                    };
+
+                FlowDocument doc = null;
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    doc = new FlowDocument();
+                    doc.PageWidth = printDialog.PrintableAreaWidth;
+                    doc.PageHeight = printDialog.PrintableAreaHeight;
+                    doc.FontFamily = new FontFamily("Calibri");
+                });
+
+                this.IsProgressIndeterminate = false;
+                int item = 0;
+                int count = conversationVm.Messages.Cast<object>().Count();
+                foreach (object message in conversationVm.Messages)
+                {
+                    this.ProgressValue = (double)item / count * 100;
+
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        ContentPresenter cp = new ContentPresenter();
+                        cp.HorizontalAlignment = HorizontalAlignment.Stretch;
+                        cp.Resources = messageTemplates;
+                        cp.Content = message;
+
+                        Block block = new BlockUIContainer(cp);
+                        doc.Blocks.Add(block);
+                    });
+
+                    item++;
+                }
+
+                this.StatusText = "Sending to printer...";
+                this.IsProgressIndeterminate = true;
+                Thread.Sleep(TimeSpan.FromSeconds(0.1));
+
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    IDocumentPaginatorSource pageSource = doc;
+                    printDialog.PrintDocument(pageSource.DocumentPaginator, $"3ma Conversation with {conversationVm.DisplayName}");
+                });
+            }
+            finally
+            {
+                this.IsProgressIndeterminate = false;
+                this.ProgressValue = 0;
+                this.StatusText = ok ? "Sent job to printer." : "Canceled printing.";
+            }
+        }
+
+        private bool CanPrint()
+        {
+            return this.SelectedConversation != null && !this.SelectedConversation.Messages.IsEmpty;
         }
 
         public ICommand ExitCommand => new RelayCommand(o => this.Exit());
