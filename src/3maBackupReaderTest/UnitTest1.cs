@@ -16,10 +16,6 @@ namespace UnitTestProject1
         {
             IIImaBackup backup = new IIImaBackup(@"C:\Users\Sebastian\Desktop\Threema\threema-backup_HVJNE9PD_1508343104568_1", "HVJNE9PD");
             backup.Read();
-            backup.Contacts.Add(backup.Me, new Contact()
-            {
-                CustomDisplayName = "CS"
-            });
             Conversation c = backup.Conversations.First(conv => conv.ConversationPartner == new Identity("UUS2VJKY"));
             
             List<string> strings = new List<string>();
