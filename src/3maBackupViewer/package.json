@@ -1,0 +1,8 @@
+{
+  "version": "1.0.0",
+  "name": "3ma-backup-viewer",
+  "private": true,
+  "devDependencies": {
+    "emoji-datasource-apple": "4.0.0"
+  }
+}

@@ -3,7 +3,8 @@
                     xmlns:messages="clr-namespace:LateNightStupidities.IIImaBackupViewer.ViewModel.Messages"
                     xmlns:content="clr-namespace:LateNightStupidities.IIImaBackupViewer.ViewModel.Messages.Content"
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
-                    xmlns:converters="clr-namespace:LateNightStupidities.IIImaBackupViewer.View.Converters">
+                    xmlns:converters="clr-namespace:LateNightStupidities.IIImaBackupViewer.View.Converters"
+                    xmlns:emoji="clr-namespace:LateNightStupidities.IIImaBackupViewer.View.Emoji">
     <converters:BoolToHorizontalAlignmentConverter x:Key="BoolToHorizontalAlignmentConverter" />
     <converters:BoolToBackgroundConverter x:Key="BoolToBackgroundConverter" />
     <converters:BoolToGridLengthConverter x:Key="BoolToGridLengthConverter" />
@@ -65,7 +66,7 @@
     </DataTemplate>
     
     <DataTemplate DataType="{x:Type content:TextMessageContentViewModel}">
-        <TextBlock Text="{Binding Text}"
+        <TextBlock emoji:EmojiTextBlock.EmojiText="{Binding Text}"
                    TextWrapping="Wrap"
                    HorizontalAlignment="Left" />
     </DataTemplate>

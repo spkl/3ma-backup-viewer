@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -84,6 +85,9 @@
     <Compile Include="ViewModel\Messages\MessageViewModel.cs" />
     <Compile Include="ViewModel\Messages\Content\TextMessageContentViewModel.cs" />
     <Compile Include="ViewModel\RelayCommand.cs" />
+    <Compile Include="View\Emoji\Emoji.cs" />
+    <Compile Include="View\Emoji\EmojiString.cs" />
+    <Compile Include="View\Emoji\EmojiTextBlock.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -119,6 +123,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="package.json" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -163,4 +168,16 @@
     <Resource Include="Icons\document-print.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>@echo off
+echo Install NPM dependencies
+call npm install
+
+echo Copy emoji files to output directory
+if not exist "$(TargetDir)Emoji" mkdir "$(TargetDir)Emoji"
+copy /Y "$(ProjectDir)node_modules\emoji-datasource-apple\img\apple\64\*.*" "$(TargetDir)Emoji\*.*" 1&gt;NUL
+
+echo Copy license files
+copy /Y "$(ProjectDir)..\..\LICENSE*" "$(TargetDir)" 1&gt;NUL</PostBuildEvent>
+  </PropertyGroup>
 </Project>
