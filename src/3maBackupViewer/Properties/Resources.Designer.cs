@@ -64,9 +64,16 @@ namespace LateNightStupidities.IIImaBackupViewer.Properties {
         ///   Looks up a localized string similar to 3ma Backup Viewer
         ///© Sebastian Fischer 2017
         ///
-        ///Published under MIT license.
+        ///Published under MIT license (see LICENSE file).
+        ///
         ///Menu icons by the Tango Desktop Project,
-        ///released under Public Domain..
+        ///released under Public Domain.
+        ///http://tango.freedesktop.org
+        ///
+        ///This software uses CsvHelper by Josh Close, licensed under Microsoft Public License (MS-PL) and Apache License, Version 2.0 (see LICENSE_CsvHelper.txt).
+        ///https://github.com/JoshClose/CsvHelper
+        ///
+        ///This software uses DotNetZip by Dino Chiesa, licensed under Microsoft Public License (MS-PL) (see LICENSE_DotNetZ [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string AboutText {
             get {
