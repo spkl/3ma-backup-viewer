@@ -46,7 +46,7 @@ namespace LateNightStupidities.IIImaBackupReader
         /// <param name="meIdentity">The ID for which this backup was created.</param>
         public IIImaBackup(string directory, string meIdentity)
         {
-            this.BackupDirectory = directory;
+            this.BackupDirectory = Path.GetFullPath(directory);
             this.Me = new Identity(meIdentity, this);
         }
 

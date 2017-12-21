@@ -89,6 +89,7 @@
     <Compile Include="View\Emoji\Emoji.cs" />
     <Compile Include="View\Emoji\EmojiString.cs" />
     <Compile Include="View\Emoji\EmojiTextBlock.cs" />
+    <Compile Include="View\ScrollingListBox.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -168,6 +169,7 @@
   <ItemGroup>
     <Resource Include="Icons\document-print.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>@echo off
