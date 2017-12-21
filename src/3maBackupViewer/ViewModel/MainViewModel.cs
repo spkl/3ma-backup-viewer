@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -25,6 +26,7 @@ namespace LateNightStupidities.IIImaBackupViewer.ViewModel
         private double progressValue;
         private bool backupOpen;
         private ConversationViewModel selectedConversation;
+        private int selectedTabIndex = 0;
 
         public string StatusText
         {
@@ -78,6 +80,16 @@ namespace LateNightStupidities.IIImaBackupViewer.ViewModel
             set
             {
                 this.selectedConversation = value;
+                this.OnPropertyChanged();
+            }
+        }
+
+        public int SelectedTabIndex
+        {
+            get => this.selectedTabIndex;
+            set
+            {
+                this.selectedTabIndex = value;
                 this.OnPropertyChanged();
             }
         }
@@ -180,18 +192,22 @@ namespace LateNightStupidities.IIImaBackupViewer.ViewModel
             }
         }
 
-        private void OpenFolder(string folder, string identity = null, bool isTempFolder = false)
+        private void OpenFolder(string folder, string identity = null, bool isTempFolder = false, bool loadAsync = true)
         {
             try
             {
                 this.IsProgressIndeterminate = true;
                 this.StatusText = "Reading backup files...";
-                identity = Microsoft.VisualBasic.Interaction.InputBox("Enter the 3ma ID:", "Enter ID", identity);
+                if (identity == null)
+                {
+                    identity = "MEMEMEME";
+                }
+
                 this.CurrentBackup = new IIImaBackup(folder, identity);
                 this.CurrentBackup.Read();
                 this.BackupOpen = true;
 
-                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                Action loadAction = new Action(() =>
                 {
                     this.Contacts.Clear();
                     foreach (Contact contact in this.CurrentBackup.Contacts.Values)
@@ -204,7 +220,16 @@ namespace LateNightStupidities.IIImaBackupViewer.ViewModel
                     {
                         this.Conversations.Add(new ConversationViewModel(conversation));
                     }
-                }));
+                });
+
+                if (loadAsync)
+                {
+                    Application.Current.Dispatcher.BeginInvoke(loadAction);
+                }
+                else
+                {
+                    Application.Current.Dispatcher.Invoke(loadAction);
+                }
             }
             finally
             {
@@ -348,6 +373,70 @@ namespace LateNightStupidities.IIImaBackupViewer.ViewModel
             this.StatusText = "Hello";
             this.IsProgressIndeterminate = false;
             this.ProgressValue = 0;
+
+            this.ProcessCommandLineArgs();
+        }
+
+        private void ProcessCommandLineArgs()
+        {
+            const string openArg = "--open";
+            const string selectTabArg = "--select-tab";
+            const string selectConversationArg = "--select-conversation";
+
+            string[] commandLineArgs = Environment.GetCommandLineArgs();
+            if ((commandLineArgs.Length - 1) % 2 != 0)
+            {
+                MessageBox.Show(
+                    "Invalid number of command line arguments. " + Environment.NewLine + "Ignoring all command line arguments.",
+                    "3ma Backup Viewer",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
+                return;
+            }
+
+            Dictionary<string,string> argsDict = new Dictionary<string, string>();
+            for (int i = 1; i + 1 < commandLineArgs.Length; i = i + 2)
+            {
+                argsDict.Add(commandLineArgs[i], commandLineArgs[i + 1]);
+            }
+
+            string argValue;
+            if (argsDict.TryGetValue(openArg, out argValue))
+            {
+                if (Directory.Exists(argValue))
+                {
+                    this.OpenFolder(argValue, "", false, false);
+                }
+                else
+                {
+                    this.OpenZipFile(argValue);
+                }
+            }
+
+            if (argsDict.TryGetValue(selectTabArg, out argValue))
+            {
+                switch (argValue)
+                {
+                    case "contacts":
+                        this.SelectedTabIndex = 0;
+                        break;
+                    case "conversations":
+                        this.SelectedTabIndex = 1;
+                        break;
+                }
+            }
+
+            if (argsDict.TryGetValue(selectConversationArg, out argValue))
+            {
+                foreach (ConversationViewModel conversationViewModel in this.Conversations)
+                {
+                    if (conversationViewModel.Conversation.ConversationPartner.ID == argValue)
+                    {
+                        this.SelectedConversation = conversationViewModel;
+                        break;
+                    }
+                }
+            }
         }
 
         #region INotifyPropertyChanged

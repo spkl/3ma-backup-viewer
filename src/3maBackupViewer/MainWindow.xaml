@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LateNightStupidities.IIImaBackupViewer"
         xmlns:viewModel="clr-namespace:LateNightStupidities.IIImaBackupViewer.ViewModel"
+        xmlns:view="clr-namespace:LateNightStupidities.IIImaBackupViewer.View"
         mc:Ignorable="d"
         DataContext="{StaticResource MainViewModel}"
         Title="3ma Backup Viewer" 
@@ -89,7 +90,7 @@
             </StatusBarItem>
         </StatusBar>
         <Grid IsEnabled="{Binding BackupOpen}">
-            <TabControl TabStripPlacement="Left">
+            <TabControl TabStripPlacement="Left" SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <TabItem>
                     <TabItem.HeaderTemplate>
                         <DataTemplate>
@@ -148,13 +149,13 @@
                         </DataTemplate>
                     </TabItem.HeaderTemplate>
                     <DockPanel>
-                        <ListBox DockPanel.Dock="Left" 
-                                 ItemsSource="{Binding Conversations}" 
-                                 SelectedItem="{Binding SelectedConversation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 HorizontalContentAlignment="Stretch"
-                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                 Width="150">
-                            <ListBox.ItemTemplate>
+                        <view:ScrollingListBox DockPanel.Dock="Left" 
+                                               ItemsSource="{Binding Conversations}" 
+                                               SelectedItem="{Binding SelectedConversation, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                               HorizontalContentAlignment="Stretch"
+                                               ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                               Width="150">
+                            <view:ScrollingListBox.ItemTemplate>
                                 <DataTemplate DataType="viewModel:ConversationViewModel">
                                     <Grid Margin="3" ToolTip="{Binding ToolTip, Mode=OneTime}">
                                         <Grid.RowDefinitions>
@@ -167,8 +168,8 @@
                                         </TextBlock>
                                     </Grid>
                                 </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                            </view:ScrollingListBox.ItemTemplate>
+                        </view:ScrollingListBox>
                         <Grid DockPanel.Dock="Top">
                             <Expander Header="Search &amp; Filter" 
                                       IsExpanded="False"

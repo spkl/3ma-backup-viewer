@@ -27,6 +27,11 @@
         }
 
         /// <summary>
+        /// Gets the ID string.
+        /// </summary>
+        public string ID => this.id;
+
+        /// <summary>
         /// Creates a new 3ma ID.
         /// </summary>
         /// <param name="id">The ID string.</param>

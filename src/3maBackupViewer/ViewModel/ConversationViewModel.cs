@@ -20,7 +20,7 @@ namespace LateNightStupidities.IIImaBackupViewer.ViewModel
         private DateTime? filterToDate;
         private TypeFilter filterType;
 
-        private Conversation Conversation { get; }
+        public Conversation Conversation { get; }
 
         public string DisplayName => this.Conversation.ConversationPartner.DisplayName;
 
